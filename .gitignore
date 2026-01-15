@@ -2,6 +2,7 @@
 *.env
 *.pem
 .DS_Store
+Thumbs.db
 *.log
 *.bak
 *.swp
