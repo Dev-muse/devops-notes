@@ -86,6 +86,7 @@ Create a folder with your code and a README:
 **Commit often** – After each lesson, lab, or meaningful progress.
 
 **Write good commit messages:**
+
 ```bash
 # Bad
 git commit -m "updates"
@@ -102,7 +103,6 @@ git commit -m "Add notes on Linux file permissions"
 
 - [CoderCo Community](https://www.skool.com/coderco)
 - [CoderCo Dotfiles](https://github.com/coderco-learning/dotfiles)
-- [CoderCo YouTube](https://youtube.com/@CoderCo)
 
 ## License
 
