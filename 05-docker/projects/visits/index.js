@@ -3,13 +3,19 @@ const redis = require("redis");
 
 const app = express();
 
-const client = redis.createClient();
+const client = redis.createClient({
+  host: "redis-server",
+});
 
 client.set("visits", 0);
 
 app.get("/", (req, res) => {
   client.get("visits", (err, visits) => {
-    client.send("Number of site visits" + visits);
+    if (err) {
+      return res.status(500).send("Error fetching data from redis");
+    }
+    res.send(`Number visitors today: ${visits}`);
+
     client.set("visits", parseInt(visits) + 1);
   });
 });
