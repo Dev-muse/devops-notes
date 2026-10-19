@@ -55,7 +55,25 @@ This project uses a monolithic single-instance architecture where all applicatio
 ├── .gitignore              # Ignores local state, secrets, and private keys (*.pem)
 └── README.md               # Project documentation
 ```
+---
 
+## 💡 What I Learnt
+
+- **Infrastructure as Code (IaC):** Modularizing cloud resource provisioning using Terraform and isolating state management via remote AWS S3 backends.
+- **Zero-Touch Automation:** Automating application stack deployment (LAMP/LEMP) using cloud-init / EC2 user data scripts.
+- **Troubleshooting & Observability:** Leveraging live SSH terminal logging (`/var/log/wordpress-install.log`) and Linux service polling to debug boot-time race conditions.
+
+---
+
+## ⚠️ Issues Hit & How They Were Fixed
+
+1. **Database Race Condition on Boot (`Error establishing a database connection`)**
+   - **Problem:** The EC2 user-data script attempted to execute database initialization commands immediately, before the MariaDB daemon had finished initializing on its socket.
+   - **Fix:** Added a service polling loop (`while ! mysqladmin ping -h localhost --silent; do sleep 2; done`) inside `user-data.sh` to block execution until MariaDB is fully alive and ready.
+
+2. **Lost SSH Key Pair (`.pem`)**
+   - **Problem:** The local SSH key was deleted/misplaced during testing, blocking remote terminal debugging.
+   - **Fix:** Updated the Terraform `key_name` configuration with a newly generated key pair and re-applied the plan, allowing secure access while keeping infrastructure code in sync.
 ---
 
 ## 🚀 Deployment Instructions
