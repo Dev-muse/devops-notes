@@ -65,17 +65,17 @@ This project uses a monolithic single-instance architecture where all applicatio
 
 ---
 
-## ⚠️ Issues Hit & How They Were Fixed
+## ⚠️ Issues Hit & Architectural Limitations
 
 1. **Database Race Condition on Boot (`Error establishing a database connection`)**
    - **Problem:** The EC2 user-data script attempted to execute database initialization commands immediately, before the MariaDB daemon had finished initializing on its socket.
    - **Fix:** Added a service polling loop (`while ! mysqladmin ping -h localhost --silent; do sleep 2; done`) inside `user-data.sh` to block execution until MariaDB is fully alive and ready.
 
-2. **Lost SSH Key Pair (`.pem`)**
-   - **Problem:** The local SSH key was deleted/misplaced during testing, blocking remote terminal debugging.
-   - **Fix:** Updated the Terraform `key_name` configuration with a newly generated key pair and re-applied the plan, allowing secure access while keeping infrastructure code in sync.
----
+2. **Monolithic & Default Infrastructure Constraints**
+   - **Limitation:** Relying on default VPC behaviors or a single `t3.micro` instance creates single points of failure. The app, database, and web server share the same resource pool, meaning a traffic spike or memory exhaustion on the instance will take down both the web server and the database simultaneously.
+   - **Future Improvement:** Scale out by decoupling the database to Amazon RDS, moving static assets to Amazon S3/CloudFront, and placing the EC2 instances behind an Application Load Balancer (ALB) inside an Auto Scaling Group.
 
+---
 ## 🚀 Deployment Instructions
 
 ### Prerequisites
