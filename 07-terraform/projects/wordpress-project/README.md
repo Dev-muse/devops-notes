@@ -98,21 +98,21 @@ Navigate to the provided URL in your browser to complete the standard 5-minute W
 ### 1. WordPress Database Credentials Setup
 *Initial configuration page verifying database connection parameters (`wordpress_db`, `amuse123`).*
 
-![WordPress Database Setup](docs/screenshots/01-db-setup.png)
+![WordPress Database Setup](https://res.cloudinary.com/dkayhh5lk/image/upload/v1792432274/cred_eligy7.png)
 
 ---
 
 ### 2. WordPress Initial Installation Process
 *WordPress web installer acknowledging a successful database connection and prompting for site details.*
 
-![WordPress Welcome Screen](docs/screenshots/02-installation-welcome.png)
+![WordPress Welcome Screen](https://res.cloudinary.com/dkayhh5lk/image/upload/v1792432395/install_akj1w8.png)
 
 ---
 
 ### 3. Final WordPress Admin Dashboard
 *Fully provisioned WordPress admin dashboard running live on AWS infrastructure.*
 
-![WordPress Dashboard](docs/screenshots/03-admin-dashboard.png)
+![WordPress Dashboard](https://res.cloudinary.com/dkayhh5lk/image/upload/v1792432389/dashboard_hdkn8q.png)
 
 ---
 
