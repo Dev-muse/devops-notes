@@ -1,96 +1,39 @@
-# 08 - CI/CD
+# CI/CD with GitHub Actions
 
-Continuous Integration and Continuous Deployment – automate testing and deployment pipelines.
+## Overview
+Two pipelines built while learning CI/CD:
 
-## What You'll Learn
+- **Task 1 (CI):** lints and tests a Python app on every push and PR, across Python 3.10 to 3.12.
+- **Task 2 (CD):** builds a Docker image and pushes it to Docker Hub on every push to `main`.
 
-- CI/CD concepts and benefits
-- GitHub Actions workflow syntax
-- Building and testing in pipelines
-- Deploying to various targets
-- Secrets management
-- Pipeline best practices
-- Other CI/CD tools (Jenkins, GitLab CI)
+![Task 1 passing](screenshots/task1-green-pipeline.png)
+![Task 2 passing](screenshots/task2-green-pipeline.png)
+![Docker Hub image](screenshots/task2-docker-hub.png)
 
-## Folder Structure
+[![Task 1 - CI](https://github.com/Dev-muse/devops-notes/actions/workflows/cicd-task1-ci.yml/badge.svg)](https://github.com/Dev-muse/devops-notes/actions)
+[![Task 2 - CD](https://github.com/Dev-muse/devops-notes/actions/workflows/cicd-task2-cd.yml/badge.svg)](https://github.com/Dev-muse/devops-notes/actions)
 
-```
-08-cicd/
-├── notes/       # Your notes from lessons
-├── labs/        # Completed lab exercises
-└── projects/    # Hands-on projects
-```
+## How it works
+- Task 1: `push` -> checkout -> set up Python (matrix) -> install -> flake8 -> pytest.
+- Task 2: `push to main` -> login with secrets -> buildx -> build -> push `latest` and `<commit SHA>` tags.
 
-## Suggested Projects
+## Pipeline files
+- [`task-1/ci.yml`](task-1/ci.yml)
+- [`task-2/cd.yml`](task-2/cd.yml)
+(Live versions are in `.github/workflows/`.)
 
-- [ ] Create a CI pipeline that runs tests
-- [ ] Build and push Docker images in a pipeline
-- [ ] Deploy to AWS from GitHub Actions
-- [ ] Set up a multi-environment deployment pipeline
+## What I learnt
+- Difference between CI, Continuous Delivery and Continuous Deployment
+- Workflow structure: events, jobs, steps, runners
+- Matrix builds, caching, secrets, `workflow_dispatch`
+- Tagging images with the commit SHA so every deploy is traceable
 
-## GitHub Actions Basics
+## Issues I solved
+| Problem | Cause | Fix |
+|---|---|---|
+| Workflow didn't trigger | File was placed incorrectly or path filters didn't match the pushed directory | Adjusted path filters and confirmed workflow location in `.github/workflows/` |
+| `denied: requested access to the resource is denied` | Missing or incorrect Docker Hub token / username repository secrets | Regenerated Personal Access Token and re-added repository secrets |
+| Flake8 linting errors | Flake8 scanned virtual environment files inside `.venv/` | Excluded `.venv/` directory from lint checks (flake8 . --max-line-length=100 --exclude=.venv)|
 
-```yaml
-# .github/workflows/ci.yml
-name: CI
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Run tests
-        run: npm test
-        
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Build Docker image
-        run: docker build -t myapp:${{ github.sha }} .
-```
-
-## Key Concepts
-
-| Term | Meaning |
-|------|---------|
-| CI | Continuous Integration – automated testing on every commit |
-| CD | Continuous Deployment – automated deployment after tests pass |
-| Pipeline | Series of automated steps |
-| Job | Collection of steps that run on the same runner |
-| Step | Individual task within a job |
-| Artifact | Files produced by a build |
-| Secret | Sensitive data stored securely |
-
-## Best Practices
-
-- Run tests on every PR
-- Use caching for dependencies
-- Store secrets in GitHub Secrets, never in code
-- Use environment-specific deployments
-- Add status badges to your README
-- Keep pipelines fast
-
-## Resources
-
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Actions Marketplace](https://github.com/marketplace?type=actions)
+## Next steps
+Add deployment to AWS (ECR + ECS), OIDC instead of stored keys, Terraform plan/apply in the pipeline.
