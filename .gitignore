@@ -125,3 +125,4 @@ Vagrantfile.local
 *.sublime-project
 *.sublime-workspace
 .editorconfig
+.venv/
