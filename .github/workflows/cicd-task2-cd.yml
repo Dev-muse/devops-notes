@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+name: Task 2 - CD
+on: 
+  push:
+    branches: [main]
+    paths: 
+      - "08-cicd/projects/task-2/**"
+      - ".github/workflows/cicd-task2-cd.yml"
+    
+  workflow_dispatch:
+
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: login to docker
+        uses: docker/login-action@v3
+        with:
+         username: ${{ secrets.DOCKERHUB_USERNAME }}
+         password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with: 
+          context: 08-cicd/projects/task-2
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/cicd-demo:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/cicd-demo:${{ github.sha }}
+        
