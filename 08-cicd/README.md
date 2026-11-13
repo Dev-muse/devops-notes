@@ -6,9 +6,9 @@ Two pipelines built while learning CI/CD:
 - **Task 1 (CI):** lints and tests a Python app on every push and PR, across Python 3.10 to 3.12.
 - **Task 2 (CD):** builds a Docker image and pushes it to Docker Hub on every push to `main`.
 
-![Task 1 passing](screenshots/task1-green-pipeline.png)
-![Task 2 passing](screenshots/task2-green-pipeline.png)
-![Docker Hub image](screenshots/task2-docker-hub.png)
+![Task 1 passing](screenshots/task-1-pipeline.png)
+![Task 2 passing](screenshots/task-2-pipeline.png)
+![Docker Hub image](screenshots/dockerhub-image.png)
 
 [![Task 1 - CI](https://github.com/Dev-muse/devops-notes/actions/workflows/cicd-task1-ci.yml/badge.svg)](https://github.com/Dev-muse/devops-notes/actions)
 [![Task 2 - CD](https://github.com/Dev-muse/devops-notes/actions/workflows/cicd-task2-cd.yml/badge.svg)](https://github.com/Dev-muse/devops-notes/actions)
